@@ -1,0 +1,198 @@
+import numpy as np
+import csv as csv
+import pandas as pd
+import matplotlib.pyplot as plt
+from pandas import DataFrame, Series
+import scipy.stats
+import datetime as dt
+import matplotlib.lines as mlines
+
+	
+# read csv using Windows XP:
+readdata = csv.reader(open('C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelections.csv','r'
+))
+
+for row in readdata:
+  print row
+
+data=[]
+  
+# read specific column from csv file:
+for row in readdata:
+    data.append(row)  
+print row[0] #reading specific column[i] from the file
+	
+# read date:
+with open('C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelections.csv') as data:
+    readdata = csv.reader(data)
+    header = next(readdata)
+    data = list(readdata)
+
+for row in data:
+    print(row[1]) # row[i], i - string
+
+Header = data[0]
+data.pop(0) #shows the header
+
+print pd.DataFrame(data, columns=Header) # prints all data in the file
+
+BID=[]
+ASK=[]
+VOL=[]
+ASKHI=[]
+BIDLO=[]
+
+for i in range(len(data)):
+  BID.append(float(data[i][38])) #check which column, in current file BID was 38
+  ASK.append(float(data[i][39]))#check which column, in my file ASK was 39
+  VOL.append(int(data[i][36]))
+  ASKHI.append(float(data[i][34]))
+  BIDLO.append(float(data[i][33]))
+  
+print(BID) #shows all values
+print(ASK) #shows all values
+print(VOL) #shows all values
+print(ASKHI) #shows all values
+print(BIDLO) #shows all values
+
+# or simply printing out the values from csv file:
+print(columns['BID'])
+print(columns['ASK'])
+print(columns['VOL'])
+print(columns['BIDLO'])
+print(columns['ASKHI'])
+
+#using Matplotlib to plot the data:
+plt.plot(ASK,BID)
+plt.title('ASK and BID graph')
+plt.xlabel('x label', color='g')
+plt.ylabel('y label', color='m')
+plt.legend(['ASK', 'BID'], loc='upper left')
+plt.show()
+
+#calculating statistics, using numpy:
+print "Total in BID: %d" % (np.sum(BID)) # calculates "BID" sum
+print "Average in BID: %d" % (np.mean(BID)) #calculates "BID" mean
+print "Standard Deviation in BID: %d" % (np.std(BID)) # calculates "BID" standard deviation
+
+print "Total in ASK: %d" % (np.sum(ASK)) 
+print "Average in ASK: %d" % (np.mean(ASK))
+print "Standard Deviation in ASK: %d" % (np.std(ASK))
+
+# shortcut to get statistics in one command:
+def summary(BID): 
+    print "Max: %d" % (np.amax(BID))
+    print "Min: %d" % (np.amin(BID))
+    print "Mean: %d" % (np.mean(BID))
+    print "Stdev: %d" % (np.std(BID))
+   
+summary(BID)
+
+def summary(ASK): 
+    print "Max: %d" % (np.amax(ASK))
+    print "Min: %d" % (np.amin(ASK))
+    print "Mean: %d" % (np.mean(ASK))
+    print "Stdev: %d" % (np.std(ASK))
+   
+summary(ASK)
+
+def summary(VOL): 
+    print "Max: %d" % (np.amax(VOL))
+    print "Min: %d" % (np.amin(VOL))
+    print "Mean: %d" % (np.mean(VOL))
+
+summary(VOL)
+
+#If we want to see how many bids were higher than mean and how many lower than mean:
+failed = 0 # assigned value 0
+passed = 0 # assigned value 0
+
+for BID in readdata:
+  if BID < 38: # previously calculated mean value = 38
+    failed += 1
+  else:
+  	passed += 1
+	
+#pie chart visualization:
+plt.pie([passed, failed], labels=["passed","failed"],explode = (0,0.05), shadow = True)
+
+print title 'values above or below mean'
+
+# Correliation cofiecient - how 2 variables are correlated:
+numpy.correlate(BID,VOL,mode=u'valid',old_behavior=False)
+from scipy.stats.stats import pearsonr
+print pearsonr(BID,VOL)# In statistics, the Pearson product-moment correlation coefficient is a measure of the linear correlation between two variables X and Y, giving a value between +1 and −1 inclusive, where 1 is total positive correlation, 0 is no correlation, and −1 is total negative correlation. It is widely used in the sciences as a measure of the degree of linear dependence between two variables.
+print numpy.corrcoef(BID,VOL) # as closer to 1 as more correlated
+
+
+....................................................................
+# Data reading using PANDAS functions:
+
+# Standard import for pandas, numpy and matplot:
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read in the csv file and display some of the basic info:
+stocks=pd.read_csv("C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelections.csv",parse_dates=['date'])
+stocks.head()
+
+print "Data types in the file:"
+print stocks.dtypes
+print "Summary of the input file:"
+print stocks.describe() # a list of variables: mean, max., min., std...
+print "Price stats:"
+print stocks['PRC'].describe() # PRC stats: mean, max., min., std... by changing variables, different results can be obtained.
+
+# Filter the columns down to the ones we need to look at for stock analysis:
+StockPrice = stocks[['TSYMBOL','PRC','date']]
+
+#Group the TSYMBOL by name and sum their number:
+StockPrice_group = StockPrice.groupby('TSYMBOL')
+StockPrice_group.size()
+........................................................................
+
+1. Figures 1 codes:
+
+from pandas import DataFrame
+import datetime
+import pandas.io.data
+import matplotlib.pyplot as plt
+
+BIDLO=[]
+ASKHI=[]
+          for row in stocks:
+    ...:     date.append(row[0])
+    ...:     BIDLO.append(row[2])
+    ...:     ASKHI.append(row[3])
+
+
+stocks=pd.read_csv("C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelectionsCELG.csv",parse_dates=['date'])
+
+price = stocks[['date','BIDLO','ASKHI']]
+
+month_plot = price_patterns.resample('M',how=sum).plot(title="CELG price fluctuation from 2004-2014",legend='PRC', color='g')
+
+stocks=pd.read_csv("C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelectionsDVD.csv",parse_dates=['date'])
+
+price = stocks[['date','BIDLO','ASKHI']]
+
+month_plot = price_patterns.resample('M',how=sum).plot(title="DVD price fluctuation from 2004-2014",legend='PRC', color='r')
+
+stocks=pd.read_csv("C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelectionsHUM.csv",parse_dates=['date'])
+
+price = stocks[['date','BIDLO','ASKHI']]
+
+month_plot = price_patterns.resample('M',how=sum).plot(title="HUM price fluctuation from 2004-2014",legend='PRC', color='m')
+
+2. Figures 2 codes:
+
+from pandas import DataFrame
+import datetime
+import pandas.io.data
+import matplotlib.pyplot as plt
+
+df=pd.read_csv('C:/Users/Simona/Desktop/Prof Fox/final project/CSV files test/StockSelectionsBAC.csv',index_col='date',parse_dates=True)
+
+df[['PRC','BIDLO','ASKHI']].plot()
+plt.title('BAC closing price, highest ask and lowest bid graph')
