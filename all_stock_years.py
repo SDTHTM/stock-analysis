@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 pd.options.mode.chained_assignment = None  # default='warn'
 
 
-#df = pd.read_csv('c:/users/Tina Meredith/data/test2.csv', parse_dates=['date'])
-df = pd.read_csv('c:/users/Tina Meredith/data/StockSelections.csv', parse_dates=['date'])
+df = pd.read_csv('c://data/StockSelections.csv', parse_dates=['date'])
 
 #sort the values according to stock symbol and date
 newstock = df[['TSYMBOL','date','PRC']]
